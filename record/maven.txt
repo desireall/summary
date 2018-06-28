@@ -1,0 +1,35 @@
+﻿了解maven
+       配置
+   D:\apache-maven-3.1.0\conf\settings.xml 
+      <localRepository>F:\maven\repository</localRepository>      // 配置本地仓储位置
+      
+      // 配置 中央仓储 镜像    <mirrorOf> central</mirrorOf>    不使用默认的下载路径,加快下载速度
+     <mirror>      
+      <id> maven-net-cn</id>
+      <name> Maven China Mirror</name>      
+      <url> http://central.maven.org/maven2/</url>        
+      <mirrorOf> central</mirrorOf>      
+    </mirror>
+
+
+
+    通过配置文件添加 下载源码  doc文件
+<profiles>
+<profile>
+    <id>downloadSources</id>
+    <properties>
+        <downloadSources>true</downloadSources>
+        <downloadJavadocs>true</downloadJavadocs>           
+    </properties>
+</profile>
+</profiles>
+<activeProfiles>
+  <activeProfile>downloadSources</activeProfile>
+</activeProfiles>
+
+
+       命令   
+         mvn dependency:sources //下载项目依赖包以及源码
+         mvn dependency:resolve -Dclassifier=javadoc  // 下载项目的依赖包以及doc.jar文件
+    
+    

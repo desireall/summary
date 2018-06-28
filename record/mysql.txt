@@ -1,0 +1,182 @@
+﻿mysql
+
+=======================================================================================
+
+http://www.cnblogs.com/adolfmc/archive/2013/01/22/2872298.html
+http://mauersu.iteye.com/blog/2309611
+1. 数据库连接池 的配置
+
+数据库连接有效性检测
+
+testOnBorrow     指明是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个.
+
+                设置为true 表示数据库连接池 把连接 交给dao层的时候会做一次有效性检测(若连接已失效 会获取新的连接给dao层)
+                 在高并发的应用中将会带来性能的问题, 所以一般生产环境 设置为false 
+		
+		生产环境一般会通过 设置 数据库连接池的 testWhileIdle 和 testBetweenEvictionRunsMillis 参数来 保证 连接有效
+
+			将“testWhileIdle”设置为true，再设置好testBetweenEvictionRunsMillis值（小于8小时）那些被mysql关闭的连接就可以被清除出去，避免“8小时问题”
+
+
+testWhileIdle    指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败, 则连接将被从池中去除.
+                注意: 设置为true后如果要生效,validationQuery参数必须设置为非空字符串
+		
+
+timeBetweenEvictionRunsMillis  在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位. 如果设置为非正数,则不运行空闲连接回收器线程
+                               在设置timeBetweenEvictionRunsmMillis值时，
+			            必须首先获知mysql的空闲连接的最大过期时间(interactive-timeout   ,   wait_timeout )。  
+				      
+				      使用  show variables like '%timeout%'; 在数据库进行查询
+
+
+validationQuery   SQL查询,用来验证从连接池取出的连接,在将连接返回给调用者之前.如果指定,
+则查询必须是一个SQL SELECT并且必须返回至少一行记录 一般使用 select 1
+		
+
+testOnReturn   指明是否在连接归还到池中前进行检验    一般生产环境 设置为false
+
+
+数据库相关的配置参数
+show variables like '%timeout%'; 
+
+show variables like 'max_connections';
+
+show global status like 'Max_used_connections';
+
+
+
+2.数据库索引的原理
+https://tech.meituan.com/mysql-index.html
+
+ 
+ B+树
+
+ 使用索引之后  查询的io次数取决于B+树的高度
+ 
+ 
+ 
+ mysql 的索引技术
+
+ MySQL5.0之前，一个表一次只能使用一个索引，无法同时使用多个索引分别进行条件扫描，
+ 但是从5.1开始，引入了 index merge 优化技术，对同一个表可以使用多个索引分别进行条件扫描
+
+
+ TODO 创建索引的原则
+ http://blog.csdn.net/qq_28602957/article/details/53127767
+ 
+ 
+ TODO 数据库优化 ： sql优化 和 索引覆盖
+ https://yq.aliyun.com/articles/62419
+
+
+
+ http://blog.csdn.net/xifeijian/article/details/20312557
+
+ 
+3.mysql的事物隔离级别
+  
+  
+  mysql的默认事物隔离级别 Repeatable read
+  
+   
+  mysql 查看数据库事物隔离级别
+  select @@tx_isolation;
+
+  MVCC
+  https://www.zhihu.com/question/27876575
+
+  MVCC是多版本并发控制，同一个数据有多个版本，事务开启时看到是哪个版本就看到这个版本，
+    最大的好处是读写不冲突，只有写于写是冲突的，这个特性可以很大程度上提升性能
+
+  innodb的多版本并发控制的实现原理
+     http://blog.sina.com.cn/s/blog_502c8cc40100xz0h.html
+     每行数据下 维护 隐藏的两列数据  "更新版本"  和 "删除版本"
+  
+   select 
+    •行的被修改版本号小于或者等于该事务号
+    •行的被删除版本号要么没有被定义,要么大于事务的版本号
+    
+   update 
+     对新插入的行,行的更新版本被修改为该事务的事务号
+
+   insert
+     在更新行的时候,innodb会把原来的行复制一份到回滚段中,并把当前的事务号作为该行的更新版本
+   
+   delete
+     对于删除,innodb直接把该行的被删除版本号设置为当前的事务号,相当于标记为删除,而不是实际删除
+
+
+     innodb 存在的幻读问题
+     http://blog.sina.com.cn/s/blog_499740cb0100ugs7.html
+
+     TODO !!!! spring 的事物隔离
+
+
+4. 参见bug 15
+http://www.linuxidc.com/Linux/2014-08/105078.htm
+
+
+5.mysql的行存储格式
+
+MyISAM有3种行存储格式：fixed/dynamic/compressed。InnoDb在MyIASM基础上新引入了Barracuda
+
+http://www.alanzeng.cn/2016/03/mysql-row-size-too-large-8126/
+
+http://blog.csdn.net/alanzyy/article/details/50782751
+
+
+
+
+
+guava
+
+
+
+redis
+
+
+
+druid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mysql 5.7  windows下修改密码
+
+关掉mysql 服务
+
+mysqld --defaults-file="D:\mysql-5.7.21-winx64\my.ini" --console --skip-grant-tables
+
+
+use mysql;
+
+update user set authentication_string=password("root") where user="root";
+

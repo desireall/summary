@@ -1,0 +1,6 @@
+﻿1. certutil -hashfile loginsvr.jar MD5   获取文件 login.jar的md5 值
+2. 
+
+
+
+certutil -hashfile sgame.jar MD5

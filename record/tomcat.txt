@@ -1,0 +1,15 @@
+﻿1.参数配置
+
+https://www.cnblogs.com/fan-yuan/p/7213950.html
+
+http://blog.csdn.net/hdfyq/article/details/66063105?utm_source=debugrun&utm_medium=referral
+
+
+2.
+线程模型
+http://blog.csdn.net/kobejayandy/article/details/47810201
+https://www.jianshu.com/p/f91f99610b9e
+
+
+3.
+

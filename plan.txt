@@ -1,0 +1,123 @@
+﻿
+
+mina
+
+
+线程上下文切换
+
+线程安全容器
+http://blog.csdn.net/gldemo/article/details/44653787
+http://www.cnblogs.com/ijavanese/p/3778688.html
+
+
+druid
+
+guava
+
+
+
+1.游戏优化相关
+  http://www.voidcn.com/article/p-rfxbuiyn-bnh.html
+  http://www.voidcn.com/article/p-moarekxh-se.html
+
+   mina通信线程模型的优化
+    1.)使用executorFilter  业务逻辑从IoProcess扔到线程池里处理 
+    2.)添加异步线池 session.write(obj) 扔到异步线程池处理  也做一些游戏中的异步处理业务
+     executorFilter中的默认的eventTypes没有IoEvent.WRITE 对于写数据不会放到executorFilter中的线程池里面处理
+   
+  网路包的优化
+    
+    
+  日志
+    运营日志异步打印
+  
+  
+  聊天系统拆分
+  
+  进入游戏返回消息查分成多个消息 加快进入游戏的速度
+
+  添加异步回调的controler
+     key  uuid 
+     定时删除过期回调
+  
+
+2.mysql
+   1).emoji表情符存储的问题 
+       (1) 修改mysql的character_set配置
+       (2) 使用emoji 进行过滤 用*号替换
+   2).数据库表中使用多个blob字段之后 row_format相关的设置
+        
+  mysql的优化
+   1).查询优化
+     
+
+
+    
+   2) 大数据量的优化
+   
+  mycat 进行分库分表
+
+  
+3.protobuffer  序列化相关
+	
+	
+4.java
+  1) 锁  多线程
+  
+
+5. 线上问题
+
+http://www.blogjava.net/landon/archive/2016/07/26/431336.html
+
+http://www.blogjava.net/landon/archive/2012/07/14/383092.html
+
+6.logback日志切分
+
+	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+             <fileNamePattern>${rootpath}GameServer.%d{yyyy-MM-dd}.log</fileNamePattern>   
+      		 <maxHistory>30</maxHistory>
+       </rollingPolicy>
+
+7. netty handler中channelread中调用 spring的getbean导致死锁问题
+
+
+
+2018-03-15
+java异常处理
+
+
+2018-03-16
+1. 排序算法
+
+2. 正则表达式
+
+
+ java8
+
+ netty4
+
+ mongon
+
+
+ mysql 中 b+tree索引  hash索引
+ 
+ spring Bean  数据库的事物管理
+
+ jvm中的g1
+ 
+ mycat
+
+ thrift
+
+ 缓存算法
+
+ spring-loaded   java应用热部署 可以动态的修改jar包
+
+
+ Scala
+ 
+ Akka
+ 
+ 
+ GPRS DTU
+ 

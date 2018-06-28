@@ -1,0 +1,540 @@
+2017-06-23 ~~ 2017-06-30 未完
+授权 认证
+oauth 2.0
+http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html
+
+授权码模式要发送两次请求得到 token
+1。获取authorization code
+2. 获取 token  (需要验证client ，使用Http Basic Authorization )
+
+
+http://www.cnblogs.com/heavenhome/p/6811425.html
+
+Ps：这里可能会有一个疑惑，授权码模式为什么要发送两次请求得到 token，为什么要有 code？
+是这样子的：
+
+浏览器的 redirect uri 是一个不安全信道，此方式不适合于传递敏感数据（如 access token）。 
+因为 uri 可能通过 HTTP referrer 被传递给其它恶意站点，也可能存在于浏览器 cacher 或 log 文件中，这就给攻击者盗取 access token 带来了很多机会。 
+另外，此协议也不应该假设 RO 用户代理的行为是可信赖的，因为 RO 的浏览器可能早已被攻击者植入了跨站脚本用来监听 access token。 
+因此，access token 通过 RO 的用户代理传递给 Client，会显著扩大 access token 被泄露的风险。 但 authorization code 可以通过 redirect uri 方式来传递，是因为 authorization code 并不像 access token 一样敏感。 即使 authorization code 被泄露，攻击者也无法直接拿到 access token，因为拿 authorization code 去交换 access token 是需要验证 Client 的真实身份。 也就是说，除了 Client 之外，其他人拿 authorization code 是没有用的。 此外，access token 应该只颁发给 Client 使用，其他任何主体（包括 RO）都不应该获取 access token。 协议的设计应能保证 Client 是唯一有能力获取 access token 的主体。 引入 authorization code 之后，便可以保证 Client 是 access token 的唯一持有人。 
+当然，Client 也是唯一的有义务需要保护 access_token 不被泄露。
+
+引入 authorization code 还会带来如下的好处。
+由于协议需要验证 Client 的身份，如果不引入 authorization code，这个 Client 的身份认证只能通过第1步的 redirect uri 来传递。 
+同样由于 redirect uri 是一个不安全信道，这就额外要求 Client 必须使用数字签名技术来进行身份认证，而不能用简单的密码或口令认证方式。 
+引入 authorization_code 之后，AS 可以直接对 Client 进行身份认证（见步骤4和5），而且可以支持任意的 Client 认证方式（比如，简单地直接将 Client 端密钥发送给 AS）。
+
+
+支持Oauth2.0的框架
+http://www.cnblogs.com/Irving/p/4134752.html
+https://oauth.net/code/
+
+
+
+Java相关项目
+http://git.oschina.net/shengzhao/spring-oauth-server
+http://git.oschina.net/mkk/spring-oauth-client
+
+https://github.com/monkeyk/oauth2-shiro 
+https://github.com/monkeyk/oauth2-shiro-redis
+
+
+
+了解 oAuth2.0
+    
+    项目 spring-rest-oauth2-sample
+     
+    TODO 
+    了解原理
+    对接一个oAuth2.0系统
+    部署一个
+
+微信oauth2.0
+
+
+
+-------------shiro-----
+ini文件加载 classpath  file   url(未)
+http://blog.csdn.net/jiaobuchong/article/details/52422954
+
+http://www.cnblogs.com/sumingk/p/5962372.html
+
+
+SecurityManager
+
+Realm
+
+Subject
+
+
+认证的流程 
+1. subject.login(token)  会委派 securitymanager 进行认证
+2. securitymanager 会根据 认证策略 authenticator 进行认证 (Authenticator的职责是验证用户帐号，是Shiro API中身份验证核心的入口点)
+3. authenticator 或调用 注册的Realm中的 getAuthenticationInfo(token) 获取认证的信息 AuthenticationInfo
+
+认证的策略
+authenticator 中的 AuthenticationStrategy 接口进行指定
+默认提供的认证策略 
+AtLeastOneSuccessfulStrategy
+AllSuccessfulStrategy
+FirstSuccessfulStrategy
+
+http://jinnianshilongnian.iteye.com/blog/2019547
+
+
+授权
+
+Shiro对权限字符串缺失部分的处理
+如“user:view”等价于“user:view:*”；而“organization”等价于“organization:*”或者“organization:*:*”。可以这么理解，这种方式实现了前缀匹配。
+另外如“user:*”可以匹配如“user:delete”、“user:delete”可以匹配如“user:delete:1”、“user:*:1”可以匹配如“user:view:1”、“user”可以匹配“user:view”或“user:view:1”等。
+即*可以匹配所有，不加*可以进行前缀匹配；
+但是如“*:view”不能匹配“system:user:view”，需要使用“*:*:view”，即后缀匹配必须指定前缀（多个冒号就需要多个*来匹配）。
+
+授权流程
+1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------Spring--------------------
+
+spring的资源访问加载(未)
+https://www.ibm.com/developerworks/cn/java/j-lo-spring-resource/index.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------使用java调用shell脚本进行服务器重载 重启操作(2017-07-17 ~~ 2017-07-29)---------
+
+参考资料
+https://yq.aliyun.com/articles/2362
+http://www.makaidong.com/%E5%8D%9A%E5%AE%A2%E5%9B%AD%E7%9F%A5%E8%AF%86%E5%BA%93/10823.shtml
+
+1. 本地调用
+使用的Peocess pro = Runtime.getRuntime().exec(cmds); 进行简单调用
+   但无法满足 复杂的应用场景  存在当前路径找不到 其他命令文件的问题
+    调用的a.shell中调用了./b.shell脚本
+   这种情况下 b.shell 无法执行  存在路径问题 b.shell 无法找到 (除非 a.shell 中对b.shell的调用使用 绝对路径)
+
+   解决办法 使用	
+         ProcessBuilder pro = new ProcessBuilder(cmds);
+	 pro.directory(new File(filePath));
+		Process value = null;
+		try {
+			value = pro.start();
+		     }catch(){
+		     }
+   其中 cmds 命令  filePath 表示命令运行的位置
+   
+   ！！！！windows 中需要注意  当 工程路径 和 要调用的脚本 不在一个盘符下的时候  cmds 命令 需要给出绝对路径,不然会出现无法找到脚本文件
+         但是windows 使用 ProcessBuilder 使用 cmds绝对路径 + filePath 就会出现找不到 文件 (暂时没有找到解决办法)  
+	
+2.java 远程连接 linux系统 调用shell
+
+参考资料
+http://blog.csdn.net/u013089991/article/details/52448989
+ 
+http://bbs.csdn.net/topics/390875958?page=1
+
+http://blog.csdn.net/u013066244/article/details/70911585    jsch中ChannelShell与ChannelExec区别
+
+使用 jsch.jar  进行远程登录调用脚本
+！！！！使用 ChannelExec 执行命令时会出现 command not found  提示 
+        解决办法： 需要 在命令前 添加 环境信息 source /etc/profile;  
+	      例： channel.setCommand("source /etc/profile; ./start.sh"); 
+
+！！！ 使用 jsch 远程连之后的 当前路径是/home/username    在调用脚本的时候 当前路径会有问题 提示 找不到文件路径
+       解决办法：  需要 在命令前 cd 到 脚本所在路径  
+            例： channel.setCommand("source /etc/profile; cd /home/username/work ; ./start.sh"); 
+ 
+
+spingmvc + shiro
+
+1. springmvc 乱码问题
+  http://blog.csdn.net/kalision/article/details/46441081
+  http://hw1287789687.iteye.com/blog/2188480
+  使用 CharacterEncodingFilter    设置 response 的 CharacterEncoding
+  使用 @RequestMapping(,produces="text/html;charset=UTF-8")  设置 response 的contentType
+
+2. springmvc 中的 配置 注解的使用 (!!!)
+ 
+
+
+ spring 加载properties 配置
+  http://blog.csdn.net/jiangyu1013/article/details/56285984
+
+
+
+3.
+
+
+
+
+
+
+
+----------------------第三方登录-------------------------
+
+
+
+   TODO  httpclient-4.5.1.jar  中 对https 协议的支持
+         httpasyncclient-4.1.1.jar
+
+ Java的异步HttpClient   http://www.cnblogs.com/guogangj/p/5462594.html
+
+使用httpclient通过post发送json https://www.iteblog.com/archives/1379.html
+
+
+
+
+
+--------
+了解 RESTful API
+
+       支持RESTful的框架 springmvc   jersey    springboot
+      
+             springboot实战  http://blog.csdn.net/liaokailin/article/category/5765237
+
+    开源项目springboot-restful 
+    
+    使用 Java 配置进行 Spring bean 管理  @Configuration  @bean
+           https://www.ibm.com/developerworks/cn/webservices/ws-springjava/
+
+
+http2.0
+
+
+
+----------------------------------------------------------------
+protobuf
+protobuf-Java-format
+
+
+Spring、SpringMVC、Mybatis、servlet、Javascript、Jquery、Ajax、Webservice 
+
+MVC设计模式
+
+Tomcat、Apache，Nginx等应用和服务器配置
+
+shell脚本  mysql，Mongodb，sql优化；
+
+memcached， redis， rabbitMQ， dubbo/dubbox ，webservice等
+
+-------------------------------------------------------------------------------
+
+服务器结构   线程模型
+
+服务器配置
+
+GM
+
+客户端热更新    php  lua
+
+
+
+apache benchmark  ?
+用apache benchmark来做的基于HTTP协议上的Helloworld的测试
+
+
+
+Lucida Console
+
+了解maven
+       配置
+   D:\apache-maven-3.1.0\conf\settings.xml 
+      <localRepository>F:\maven\repository</localRepository>      // 配置本地仓储位置
+      
+      // 配置 中央仓储 镜像    <mirrorOf> central</mirrorOf>    不使用默认的下载路径,加快下载速度
+     <mirror>      
+      <id> maven-net-cn</id>
+      <name> Maven China Mirror</name>      
+      <url> http://central.maven.org/maven2/</url>        
+      <mirrorOf> central</mirrorOf>      
+    </mirror>
+
+
+    通过配置文件添加 下载源码  doc文件
+<profiles>
+<profile>
+    <id>downloadSources</id>
+    <properties>
+        <downloadSources>true</downloadSources>
+        <downloadJavadocs>true</downloadJavadocs>           
+    </properties>
+</profile>
+</profiles>
+<activeProfiles>
+  <activeProfile>downloadSources</activeProfile>
+</activeProfiles>
+
+
+       命令   
+         mvn dependency:sources //下载项目依赖包以及源码
+         mvn dependency:resolve -Dclassifier=javadoc  // 下载项目的依赖包以及doc.jar文件
+
+         mvn package // 项目打包
+
+
+Eclipse 中使用 Maven的问题    
+    在用eclipse导入web项目时 如果eclipse安装了wtp插件在会自动将其转化为eclipse认得到的web项目，在项目上面点击右键run as 的run on server可以用，但是当eclipse没有安装wtp插件时run on server则不用，此时的解决方式为用命令行切换到项目的根目录然后执行 
+          mvn eclipse:eclipse –Dwtpversion=1.0即可解决。
+
+maven已有项目的导入问题  http://linlin.blog.techweb.com.cn/archives/34.html
+
+使用maven 创建新的项目  http://everlook.iteye.com/blog/1446672
+     创建web项目
+     mvn archetype:generate -DgroupId=pers.yuhuo.java-tot -DartifactId=java-tot -DarchetypeArtifactId=maven-archetype-webapp 
+
+
+
+
+日志组件 logback
+  配置文件默认路径 src 下   使用  java -cp .:${JAVA_LOG}   进行配置
+   配置文件查找顺序logback.groovy ---->logback-test.xml----> logback.xml
+    如果配置文件都不存在, 那么 logback 默认地会调用BasicConfigurator
+
+！！了解自定义(包  级别) 日志输入
+http://blog.csdn.net/phantomes/article/details/44779529
+http://webinglin.github.io/2015/06/04/Logback-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/
+
+    <!-- 禁掉mina内部的debug级别输出 -->
+  <logger name="org.apache.mina" level="INFO">
+    <appender-ref ref="stdout" />
+    <appender-ref ref="file—all" />
+    <appender-ref ref="file—above-info" />
+  </logger>
+
+
+常用的配置方式
+
+
+
+
+excel <--> xml
+
+
+
+linux 上 apache 服务器
+
+查看 版本号
+ cd /etc/rc.d/init.d/
+ httpd -v
+
+网页默认目录是/var/www/html下。修改方法：
+打开/etc/httpd/conf/httpd.conf文件，找到下面这行
+DocumentRoot "/var/www/html"
+可以改成你想要的目录。
+-----------------------------------------------------------
+apache的默认重要配置信息如下：
+配置文件：/etc/httpd/conf/http.conf
+服务器的根目录：/var/www/html
+访问日志文件：/var/log/httpd/access_log
+错误日志文件：/var/log/httpd/error_log
+运行apache的用户：apache
+运行apache的组：apache端口：80模块存放路径：/usr/lib/httpd/modules
+
+http服务位置   /etc/rc.d/init.d/
+启动apache /etc/rc.d/init.d/httpd start
+
+
+apache benchmark  网站压力测试
+
+
+  
+https 
+  自签CA 证书  (使用openssl OR Java中的keytool生成)
+    生成.csr ---> .crt   .cer 文件
+
+
+mysql
+  存储过程
+     
+     
+     
+
+MongoDB
+
+
+
+Redis
+ 基础
+ 
+
+ redis 集群部署
+ 
+
+
+Ruby
+ 基础
+  
+ 
+ 删除所有的gem 
+  1.windows 
+     ruby -e "`gem list`.split(/$/).each { |line| puts `gem uninstall -Iax #{line.split(' ')[0]}` unless line.empty? }"
+  2.linux 
+     gem list --no-version | xargs gem uninstall -aIx
+
+
+rails 
+  改代码之后 自动加载的路径      ActiveSupport::Dependencies.autoload_paths
+F:/rubyWorkspace/simple_cms/app/assets
+F:/rubyWorkspace/simple_cms/app/channels
+F:/rubyWorkspace/simple_cms/app/controllers
+F:/rubyWorkspace/simple_cms/app/controllers/concerns
+F:/rubyWorkspace/simple_cms/app/helpers
+F:/rubyWorkspace/simple_cms/app/jobs
+F:/rubyWorkspace/simple_cms/app/mailers
+F:/rubyWorkspace/simple_cms/app/models
+F:/rubyWorkspace/simple_cms/app/models/concerns
+F:/rubyWorkspace/simple_cms/test/mailers/previews
+
+
+
+多线程
+http://www.imooc.com/article/3306
+
+
+
+
+Java 线程池
+
+
+
+
+jetty
+ 
+ https://www.ibm.com/developerworks/cn/web/wa-lo-jetty/
+
+
+guava
+        --- 缓存使用 guava-18.0.jar   
+    TODO 了解    http://ifeve.com/google-guava/
+        https://github.com/tdziurko/Guava-Lessons
+ 
+
+netty
+  基于netty的websocket
+
+
+
+
+
+
+mysql 
+  存储过程
+  sysdate() - INTERVAL 10 MINUTE    // 当前时间 - 10 分钟
+
+
+  类型
+  decimal  
+
+
+
+steve pavlina
+http://www.stevepavlinachina.com/archives.html
+
+
+
+查看linux的系统日志  /var/log/messages
+
+
+
+
+
+
+
+
+
+
+FH
+
+eclipse 中tomcat插件 启动的位置
+F:\branch\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps
+
+
+1.使用shiro做认证系统
+
+2.com.swetake.util.qrcode   使用第三方jar   QRCode.jar  做 二维码的绘制解析
+
+3.mybatis 
+
+4.ehcache 缓存
+
+5.druid 连接池
+
+6.
+
+
+
+
+http 规范
+
+1. header 
+Content-Type
+
+
+
+Host
+
+http://blog.csdn.net/u011025344/article/details/38821539
+
+
+
+
+
+
+
+
+
+========================================================================================
+
+
+
+

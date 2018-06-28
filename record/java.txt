@@ -1,0 +1,348 @@
+﻿
+
+http://www.cnblogs.com/xrq730/p/6757230.html
+
+一、
+volatile
+
+http://www.jianshu.com/p/d3fda02d4cae
+
+volatile的使用场景
+
+http://blog.csdn.net/vking_wang/article/details/9982709
+
+
+
+
+String StringBuffer StringBuilder
+http://www.cnblogs.com/xrq730/p/4841518.html
+
+序列化 
+Serializable Externalizable transient
+http://www.cnblogs.com/lanxuezaipiao/p/3369962.html
+相关 IO 的 ObjectOutput.writeObject    ObjectInput.readObject 源码  (未完成)
+
+
+Annotation
+http://www.cnblogs.com/chopper711/p/5610459.html
+http://www.cnblogs.com/heavenhome/articles/6256205.html
+
+try catch 原理 以及 性能问题
+http://blog.csdn.net/tao_zi7890/article/details/17584813
+http://blog.csdn.net/freemanzhao/article/details/53389731
+try catch finally流程详解
+http://blog.csdn.net/xiaolingfeng12345/article/details/25685033
+
+
+finally
+
+
+jdk 7  比较器报错(比较器传递性问题  java6 没有强制要求传递性)
+http://blog.2baxb.me/archives/993
+http://blog.csdn.net/fanzitao/article/details/8040201
+
+
+
+
+
+----------------------
+
+java 集合
+https://github.com/pzxwhc/MineKnowContainer/issues/75
+
+ArrayList 不是线程安全的。
+Vector 就可以看作是 ArrayList 的一个线程安全版本。
+       由于实现了 List 接口，所以也是 可以插入空值，可以插入重复的值。 
+       它和 HashTable 一样，是属于一种同步容器，而不是一种并发容器。
+          （参考《Java并发编程实战》，类似CopyOnWriteArrayList，ConcurrentHashMap这种就属于并发容器）
+
+
+集合操作优化
+https://www.ibm.com/developerworks/cn/java/j-lo-set-operation/index.html
+
+
+
+ArrayBlockingQueue
+
+LinkedBlockingQueue
+
+
+ConcurrentHashMap
+
+https://www.ibm.com/developerworks/cn/java/java-lo-concurrenthashmap/
+
+
+多线程
+
+并行 并发 同步 异步
+https://gist.github.com/yhben/5202572
+
+http://www.cnblogs.com/tracylining/p/3506673.html
+
+线程池
+
+
+http://www.blogjava.net/bolo/archive/2015/01/20/422296.html
+计算密集型业务   线程数量 = cpu核数 + 1
+io密集型业务 线程数量 =  CPU核心数/(1-阻塞系数)
+    这个阻塞系数一般为0.8~0.9之间，也可以取0.8或者0.9。套用公式，对于双核CPU来说，它比较理想的线程数就是20，当然这都不是绝对的，需要根据实际情况以及实际业务来调整。
+    final int poolSize = (int)(cpuCore/(1-0.9))
+
+
+
+
+多线程总结
+1. https://www.cnblogs.com/luxiaoxun/p/3870265.html
+
+2. https://www.cnblogs.com/wxd0108/p/5479442.html
+
+3. https://www.cnblogs.com/zch-lxh1314/p/7090653.html
+
+
+
+锁
+
+synchronized
+
+*****************synchronized和lock的实现原理********************
+http://blog.csdn.net/tingfeng96/article/details/52219649
+
+
+
+
+
+
+java 线程中断机制
+http://www.infoq.com/cn/articles/java-interrupt-mechanism
+
+
+java 线程等待机制和通知机制
+wait notify notifyAll 的区别和使用
+http://www.importnew.com/16453.html
+
+http://bbs.itheima.com/thread-25925-1-1.html
+wait()是用来锁定一个对象的，在调用这个notify()方法前，他后面的代码永远不会被执行。这种锁定不能够自动解锁.
+
+notify()的时候,被阻塞的线程就会从阻塞处继续执行.
+
+
+wait 和 sleep的区别
+https://zhidao.baidu.com/question/1046446351861647979.html
+
+notify 丢失
+https://www.cnblogs.com/lnlvinso/p/4753554.html
+
+线程的虚假唤醒
+http://blog.csdn.net/rocky_03/article/details/71247675
+
+
+Thread方法join() 中的wait(0)的唤醒
+https://www.cnblogs.com/1995hxt/p/6359993.html
+
+
+
+多线程上下文切换
+https://www.cnblogs.com/szlbm/p/5505707.html
+
+
+java  内存模型 无序写入
+
+
+java 中的 锁
+http://blog.csdn.net/zqz_zqz/article/details/70233767
+
+
+synchronized 和 lock的性能对比
+http://blog.csdn.net/ganyao939543405/article/details/52486316?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+
+https://segmentfault.com/a/1190000006982824
+
+Lock vs synchronized
+
+
+ReentrantLock vs synchronized
+https://segmentfault.com/a/1190000006982824
+
+
+可重入锁 和 不可重入锁
+https://www.cnblogs.com/dj3839/p/6580765.html
+
+
+
+
+https://www.ibm.com/developerworks/cn/java/j-jtp10264/index.html
+
+ReentrantLock 的使用的
+
+Condition 的使用
+http://blog.csdn.net/jiankunking/article/details/72874345
+
+
+
+
+
+
+ReentrantLock 相关源码解读
+
+AbstractQueuedSynchronizer
+http://blog.csdn.net/pfnie/article/details/53191892
+
+http://ifeve.com/introduce-abstractqueuedsynchronizer/
+
+
+UnSafe
+
+https://stackoverflow.com/questions/26534489/unsafe-park-vs-object-wait
+
+https://www.cnblogs.com/pkufork/p/java_unsafe.html
+
+https://www.cnblogs.com/mickole/articles/3757278.html
+
+
+
+CAS 与 Unsafe
+
+
+
+
+
+
+
+
+
+ThreadLocal 内存泄露问题
+http://www.importnew.com/22039.html
+http://www.importnew.com/22046.html
+
+
+类的生命周期
+https://www.cnblogs.com/hf-cherish/p/4970267.html
+
+
+
+线程安全的集合
+http://blog.csdn.net/gldemo/article/details/44653787
+
+http://www.cnblogs.com/ijavanese/p/3778688.html
+
+
+
+
+actor模型
+
+----------------------------------------
+java 类加载
+http://www.importnew.com/17105.html
+
+
+jvm 垃圾回收算法
+http://blog.csdn.net/hanruikai/article/details/42643325
+
+
+
+
+
+-------------------------------------
+IO
+
+
+
+
+
+
+NIO
+
+1.怎么出现的
+
+
+2.一个nio的例子
+
+
+3.
+
+
+
+
+
+
+
+
+
+
+
+=========================================================
+
+
+TCP
+
+  tcp 建立连接的3次通信   断开连接的4次通信
+
+
+
+  time_wait  是什么
+http://blog.sina.com.cn/s/blog_8e5d24890102w9yi.html
+http://kerry.blog.51cto.com/172631/105233/
+http://elf8848.iteye.com/blog/1739571
+
+  time_wait 过多的优化
+
+
+
+
+
+===========================================
+
+HTTP
+
+
+
+
+
+
+
+
+
+
+
+
+
+=============================================
+
+分布式缓存
+
+一致性hash算法
+http://www.cnblogs.com/xrq730/p/5186728.html
+
+
+
+
+
+
+
+一个基于长连接的游戏服务端原型程序
+
+一个可以模拟客户端的测试程序。
+测试程序通过模拟客户端实现多个玩家的登录和登出。
+服务端原型程序实现同时处理多个玩家发出的指令操作，并将结果推送回客户端。
+1.	底层网络通信功能须采用netty框架实现
+2.	模拟客户端的测试程序不需要有图形界面，通过日志输出过程即可
+3.	不限制网络通信中采用的数据序列化技术，但如引用第三方工具，请保证在项目中已经集成好，可以直接使用（必要时请说明依赖的环境信息）
+4.	同一玩家在同一时间只能登录一次，并保证登录登出操作的严格时序。玩家采用uid作为登录的身份标识，uid可以模拟生成
+5.	服务端最终的数据落地使用支持SQL的数据库(常规或者嵌入式数据库均可)。但如采用第三方数据库，请附带建表和初始化数据脚本，并指明数据库的环境信息。
+6.	最终提交的代码限制为Eclipse或者IntelliJ IDEA 工程
+7.	除代码外，应有说明文档来描述运行和使用方式等相关信息
+8.	选做题：实现玩家登录后，可以有选择的实现一些游戏业务常用逻辑，比如：建造建筑物、建筑物升级等
+设计模式、线程模型和编码风格
+
+
+
+1.服务器原型
+
+2.消息顺序执行
+ 
+ 3.同时处理多个玩家的指令
+ 
+4.同一时间只能执行一次登陆
+
+
+-server -Xss228k -Xms512m -Xmx512m -XX:PermSize=128M -XX:MaxPermSize=256M -XX:NewSize=256m -XX:MaxNewSize=256m -XX:SurvivorRatio=4 -XX:CMSFullGCsBeforeCompaction=0 -XX:CMSInitiatingOccupancyFraction=80 -XX:MaxTenuringThreshold=15 -XX:+CMSScavengeBeforeRemark -XX:+ScavengeBeforeFullGC -XX:+DisableExplicitGC  -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompactAtFullCollection -XX:+CMSClassUnloadingEnabled -Dclient.encoding.override=UTF-8 -Dfile.encoding=UTF-8 -Duser.language=zh -Duser.region=CN -XX:+TieredCompilation -XX:ParallelCMSThreads=4 -XX:+UseFastAccessorMethods -XX:+UseFastAccessorMethods -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:gc.log 

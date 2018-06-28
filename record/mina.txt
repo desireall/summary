@@ -1,0 +1,225 @@
+﻿io
+
+io多路复用
+https://www.zhihu.com/question/28594409
+
+http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html
+
+阻塞io --> 非阻塞io ---> io多路复用 ------> 信号驱动io  ------>  异步io
+
+
+http://weixiaolu.iteye.com/blog/1479656
+
+！！！看看5种IO模式的异同，体会体会，然后可以了解一下EPoll模型。
+最后，还可以说一下实现这个东西需要的：访问者模式，回调方法等东西！
+
+
+nio
+http://www.importnew.com/19816.html
+
+
+io多路复用的三种实现方式中 select  和 epoll的区别
+http://www.cnblogs.com/aspirant/p/6877350.html?utm_source=itdadao&utm_medium=referral
+
+
+
+
+
+SelectionKey  中的  attachment
+
+
+
+2017.09.07
+1.nio实例
+http://blog.csdn.net/anxpp/article/details/51512200
+2.理解流程
+
+3.深入了解原理
+
+
+
+2017.09.08
+
+
+观察者模式
+​​状态模式
+
+
+
+2017.09.12
+
+
+
+
+
+
+
+mina (2017-04-19  ~~ )
+IoService,IoFilterChain,IoHandler,IoSession
+1）IoService
+IoService负责底层IO操作，他的好处主要在于隐藏底层IO操作，方便使用；基于事件机制将同步IO转化成异步IO。
+最常用的接口是SocketAcceptor、SocketConnector，用做TCP协议通讯下的服务端和客户端。
+2)IoFilterChain
+IoFilterChain主要负责数据包的处理工作，包括编码、解码等功能。其主要思想是——与业务逻辑代码分离。当然IofilterChain也是处理流程的扩展点，包括为处理流程添加线程池。
+3）IoHandler
+IoHandler主要实现业务逻辑（调用业务逻辑接口）。
+4）IoSession
+IoSession是对底层连接的封装，一个IoSession对应一个底层的IO连接。
+发送数据其实是个异步的过程。发送的操作首先会逆向穿过IoFilterChain，到达IoService。但IoService上并不会直接调用底层IO接口来将数据发送出去，而是会将该次调用封装成一个WriteRequest，放入session的writeRequestQueue中，最后由IoProcessor线程统一调度flush出去。所以发送操作并不会引起上层调用线程的阻塞.
+
+
+工作流程
+
+
+IoService
+
+IoFilterChain
+
+   DefaultFilterChain   HeadFilter  TailFilter
+
+IoHandler
+
+
+
+线程模型
+
+NioSocketAcceptor
+
+sessionConfig的配置 
+参见 AbstractIoSessionConfig 中的  public final void setAll(IoSessionConfig config)  方法
+
+
+
+Apache Mina 中关于线程模型的关键源代码
+
+
+NioSocketAcceptor
+1. acceptor 线程
+accepter 在绑定端口与之后 调用的 AbstractPollingIoAcceptor 中的   startupAcceptor 方法 启动
+
+使用AbstractIoService中的executor线程
+
+
+2.IoProcessor 线程
+
+SimpleIoProcessorPool 中的executor 一般使用的默认的 newCacheThreadExecutor
+
+AbstractPollingIoProcessor 
+
+3.pool 线程 
+在配置ExecutorFilter 之后会用，ExecutorFilter 会将 IOhandler 中的操作分装成IOEvent 的任务放在 pool的线程池中执行
+
+
+
+
+特殊的Filter 
+ProtocolCodecFilter  ExecutorFilter 
+
+ExecutorFilter 默认不把WRITE类型的IOeventfilter 放入 线程池中处理 
+
+
+责任链设计模式
+
+
+
+
+
+
+
+
+
+
+未使用 Executorfilter 的收发消息线程情况
+
+
+2017-10-30 13:45:00,183 INFO [NioProcessor-15] org.xgame.net.CSProtocolDecoder#doDecode [CSProtocolDecoder.java:74] XXXXXXXXXXXXXXXXXXXX   doDecode
+2017-10-30 13:45:00,183 INFO [NioProcessor-15] org.xgame.net.ClientAcceptorHandler#messageReceived [ClientAcceptorHandler.java:55] 收到消息。。。。。。。。。。。。。。
+2017-10-30 13:45:00,185 DEBUG [NioProcessor-15] org.xgame.net.ClientAcceptorHandler#messageReceived [ClientAcceptorHandler.java:70] userid:34844611_5900732 get msg:msgid: C2S_EnterCity
+entercity {
+  cityid: 1001
+  pos: 6553858
+  lineNum: -1
+}
+
+2017-10-30 13:45:00,196 DEBUG [main] org.xgame.session.ClientSession#sendMessage [ClientSession.java:179] userid:34844611_5900732, msg:msgid: S2C_EnterBath
+enterBath {
+  type: 0
+  pickThrowNum {
+    havePickNum: 0
+    dayPickRichNum: 0
+    dayWashNum: 0
+  }
+  calculateTime: 300
+  throwCD: 0
+  pickupCD: 0
+  currLineNum: 1
+  hasGetExtBathAward: false
+  expLimit: 4500
+  exp: 4500
+  goldTime: true
+  oriCityId: 1004
+}
+
+2017-10-30 13:45:00,197 INFO [main] org.xgame.net.CSProtocolEncoder#encode [CSProtocolEncoder.java:76] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!encode
+2017-10-30 13:45:00,197 INFO [NioProcessor-15] org.xgame.net.ClientAcceptorHandler#messageSent [ClientAcceptorHandler.java:107] 消息发送。。。。。。。。。。。
+2017-10-30 13:45:00,199 DEBUG [LogThread] org.xgame.syslog.Log#writeSysLog [Log.java:98] length:337, [2017-10-30 13:45:00 +0800][Bathhouse],{"ip":"192.168.1.222","server":2,"account_id":"34844611_5900732","role_id":2002139,"role_name":"39840996","role_level":8,"role_type":2,"app_channel":"appYilegame","udid":"12345678901234","mac":"127.0.0.1","aid":"34844611_5900732","rmb":0,"reason":"enter","tw_id":1,"cost_item":[],"item":[],"exp":0}
+2017-10-30 13:45:00,200 DEBUG [main] org.xgame.session.ClientSession#sendMessage [ClientSession.java:179] userid:34844611_5900732, msg:msgid: S2C_PlayerEnterCity
+enterCity {
+  cityId: 1001
+}
+
+2017-10-30 13:45:00,201 INFO [main] org.xgame.net.CSProtocolEncoder#encode [CSProtocolEncoder.java:76] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!encode
+2017-10-30 13:45:00,201 INFO [NioProcessor-15] org.xgame.net.ClientAcceptorHandler#messageSent [ClientAcceptorHandler.java:107] 消息发送。。。。。。。。。。。
+
+
+
+
+
+
+
+
+
+
+
+使用 Executorfilter 的收发消息线程情况
+
+
+
+2017-10-30 13:49:32,220 INFO [NioProcessor-12] org.xgame.net.CSProtocolDecoder#doDecode [CSProtocolDecoder.java:74] XXXXXXXXXXXXXXXXXXXX   doDecode
+2017-10-30 13:49:32,220 INFO [pool-9-thread-1] org.xgame.net.ClientAcceptorHandler#messageReceived [ClientAcceptorHandler.java:55] 收到消息。。。。。。。。。。。。。。
+2017-10-30 13:49:32,221 DEBUG [pool-9-thread-1] org.xgame.net.ClientAcceptorHandler#messageReceived [ClientAcceptorHandler.java:70] userid:34844611_5900732 get msg:msgid: C2S_EnterCity
+entercity {
+  cityid: 1001
+  pos: 6553858
+  lineNum: -1
+}
+
+2017-10-30 13:49:32,234 DEBUG [main] org.xgame.session.ClientSession#sendMessage [ClientSession.java:179] userid:34844611_5900732, msg:msgid: S2C_EnterBath
+enterBath {
+  type: 0
+  pickThrowNum {
+    havePickNum: 0
+    dayPickRichNum: 0
+    dayWashNum: 0
+  }
+  calculateTime: 300
+  throwCD: 0
+  pickupCD: 0
+  currLineNum: 1
+  hasGetExtBathAward: false
+  expLimit: 4500
+  exp: 4500
+  goldTime: true
+  oriCityId: 1004
+}
+
+2017-10-30 13:49:32,234 INFO [main] org.xgame.net.CSProtocolEncoder#encode [CSProtocolEncoder.java:76] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!encode
+2017-10-30 13:49:32,235 INFO [pool-9-thread-1] org.xgame.net.ClientAcceptorHandler#messageSent [ClientAcceptorHandler.java:107] 消息发送。。。。。。。。。。。
+2017-10-30 13:49:32,237 DEBUG [LogThread] org.xgame.syslog.Log#writeSysLog [Log.java:98] length:337, [2017-10-30 13:49:32 +0800][Bathhouse],{"ip":"192.168.1.222","server":2,"account_id":"34844611_5900732","role_id":2002139,"role_name":"39840996","role_level":8,"role_type":2,"app_channel":"appYilegame","udid":"12345678901234","mac":"127.0.0.1","aid":"34844611_5900732","rmb":0,"reason":"enter","tw_id":1,"cost_item":[],"item":[],"exp":0}
+2017-10-30 13:49:32,238 DEBUG [main] org.xgame.session.ClientSession#sendMessage [ClientSession.java:179] userid:34844611_5900732, msg:msgid: S2C_PlayerEnterCity
+enterCity {
+  cityId: 1001
+}
+
+2017-10-30 13:49:32,238 INFO [main] org.xgame.net.CSProtocolEncoder#encode [CSProtocolEncoder.java:76] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!encode
+2017-10-30 13:49:32,239 INFO [pool-9-thread-1] org.xgame.net.ClientAcceptorHandler#messageSent [ClientAcceptorHandler.java:107] 消息发送。。。。。。。。。。。

@@ -1,0 +1,142 @@
+﻿  git常用命令    (2017-04-05 ~~~ 2017-04-12)
+   教程 http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
+        
+
+git 是分布式的版本管理工具 
+svn cvs 是集中式的版本管理工具 
+这两者之间的主要区别在于 历史版本的维护位置
+ git 本地仓库不仅有代码库还有历史库,在本地开发就可以记录历史库
+ svn 的历史库只存在于中央仓库,每次对比与提交代码都需要连接到中央仓库
+
+git 这样的好处在于：
+1、自己可以在脱机环境查看开发的版本历史
+2、多人开发时如果充当中央仓库的Git仓库挂了，随时创建一个新的中央库然后同步就立刻恢复了中央库
+
+git在切到分支做了一半后可以随时ci到本地仓库后切到其他分支修改bug之类的。svn就不行，你完成一半的工作提交上去了可能就导致别人更新下来后直接运行不了。
+
+
+
+     解决冲突    ！！！
+        http://blog.csdn.net/u012150179/article/details/14047183
+
+     git add命令详解   
+         http://hubingforever.blog.163.com/blog/static/171040579201231110371044/
+
+
+     1.提交操作
+     git add .
+     git rm filename
+     git commit -m ""
+     git push origin master
+     
+
+     git add 相关命令
+        git add <path>  添加文件 或者 目录内的新增、修改到索引库(暂存区)中   不处理删除
+	git add -u <path>   添加文件 或者 目录内的修改、删除到索引库(暂存区)中 不处理新增
+	git add -A <path>   添加文件 或者 目录内的新增、修改、删除到索引库(暂存区)中
+	
+     
+
+
+     2.更新
+     git pull origin master
+
+
+     3. 状态查看(经常使用)
+     git status   (常用命令 查看当前的状态)
+
+     git diff  
+
+     git diff    #是工作区(work dict)和暂存区(stage)的比较
+     git diff --cached    #是暂存区(stage)和分支(master)的比较
+
+
+     git log   查看历史记录
+     git log  --pretty=oneline   查看历史记录的简洁信息
+     git log --graph   可以看到分支合并图。
+
+     git log --graph --pretty=oneline --abbrev-commit   查看分支合并的历史记录 
+
+     git reflog查看命令历史
+
+     git remote -v  查看远程地址详情(--verbose)
+
+     
+     4.版本回退
+     git reset --hard [commit id]   回退指定版本
+     git reset --hard HEAD^  会退到当前版本的上一个版本
+
+     
+     5.撤销修改
+     git reset HEAD file可以把暂存区的修改撤销掉(unstage)
+
+
+     git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+
+      一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+
+      一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+
+      总之，就是让这个文件回到最近一次git commit或git add时的状态。
+
+     6.分支
+     
+     http://www.ruanyifeng.com/blog/2014/06/git_remote.html
+
+     git branch -a 查看所有的分支(本地 、远程)
+
+     git checkout -b [branchname] 创建分支并切换到新的分支 (git checkout命令加上-b参数表示创建并切换，相当于以下两条命令  
+                                                            git branch dev 创建       git checkout dev  切换)
+     
+     git merge [branchname]  合并的分支(使用 Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息)
+
+     git merge --no-ff -m "xxx" [branchname]  合并的分支(加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并)
+
+     git branch -d [branchname]  删除分支
+
+     git log --graph --pretty=oneline --abbrev-commit   查看分支合并的历史记录 
+
+
+
+     git checkout -b branch-name origin/branch-name 在本地创建和远程分支对应的分支，使用，本地和远程分支的名称最好一致；
+
+     git branch --set-upstream branch-name origin/branch-name  建立本地分支和远程分支的关联
+
+     git fetch 远程下载更新 ！！！  TODO 查看
+
+     7.bug 分支   
+        http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/00137602359178794d966923e5c4134bc8bf98dfb03aea3000
+
+     git stash 封存工作区修改(工作区就没改变了)
+
+     git stash list命令看看  刚才的工作现场存到哪去了？
+
+     git stash apply [name]申请恢复封存的工作现场(默认是最新的工作现场)
+
+     git stash drop [name]删除封存的工作现场(默认是最新的工作现场)
+
+     git stash pop 恢复并删除工作现场(只能是最新的工作现场)
+
+     8.tag
+
+     git show <name> 查看
+
+     git tag <name>用于新建一个标签，默认为HEAD，也可以指定一个commit id；
+
+     git tag -a <tagname> -m "blablabla..."可以指定标签信息；
+
+     git push origin <tagname>可以推送一个本地标签；
+
+     git push origin --tags可以推送全部未推送过的本地标签；
+
+     git tag -d <tagname> 删除本地标签
+
+     git push origin :refs/tags/<tagname> 可以删除一个远程标签。
+
+
+
+
+
+
+     版本比对工具
+     beyond compare 30天评估期到了怎么办破解版？windows的话你只要把beyond Compare 4文件夹下面的BCUnrar.dll文件删掉就行了 ​​​​

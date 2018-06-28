@@ -1,0 +1,77 @@
+﻿Linux 命令大全 http://man.linuxde.net/
+grep
+
+
+
+head 
+
+tail 
+
+http://blog.csdn.net/carolzhang8406/article/details/6112707
+
+last
+
+
+wc
+
+
+more 
+
+
+rsync 远程同步文件
+
+lfac_fetchtool.sh
+
+http://man.linuxde.net/rsync
+
+
+
+awk
+http://man.linuxde.net/awk
+
+http://www.cnblogs.com/ggjucheng/archive/2013/01/13/2858470.html
+http://tanxin.blog.51cto.com/6114226/1222140
+http://blog.163.com/zhangjie_0303/blog/static/99082706201111152303363/
+
+
+
+常用例子
+
+grep "" filename | head -n 30  匹配之后截取最前30行
+
+grep "" filename | tail -n 30  匹配之后截取最后30行
+
+grep "ERROR" filename | wc -l 统计匹配的行数
+
+grep -n "ERROR" filename 搜索出的内容带有行号
+
+grep -R -A5 -B5 "LoginFutureCallBack#failed" dest/*/login02-3001/log/login-info.log   级联查找所有login-info.log 下的LoginFutureCallBack#failed
+
+
+ps -ef | grep "loginserver" | grep "t6Test" | grep -v grep | awk '{print $2}'    获取 用户t6Test进程loginserver 的pid
+
+ps -ef | grep "loginserver" | grep "t6Test" | grep -v grep   获取包含 loginserver 包含t6Test  剔除这两部份之后的内容
+
+
+
+
+awk -F '充值RMB:' '{printf $2"\n"}'  filename     使用 充值RMB: 分割文件 并打印 每一行的第二个字段 
+
+
+统计总共充值数量
+ ./allCharge.sh | awk -F '充值RMB:' '{printf $2"\n"}' | awk '{sum += $1} END{print "总共充值:"sum}'
+
+ ./allCharge.sh | awk -F '充值RMB:' '{sum += $2} END{print "总共充值:"sum}' 
+
+
+
+
+nc 
+
+nc -vuz 192.168.1.222 11000 发送多个udp消息到 192.168.1.222 11000 
+
+
+文件 md5 值
+
+
+
