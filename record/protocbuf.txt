@@ -79,5 +79,8 @@ Protobuf想让int32和int64在编码格式上兼容，int32会强制转换成uin
 
 
 
+flatbuff  与  protobuf 的性能比较
+https://blog.csdn.net/menggucaoyuan/article/details/34409433
+
 
 

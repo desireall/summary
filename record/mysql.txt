@@ -44,6 +44,15 @@ show variables like 'max_connections';
 show global status like 'Max_used_connections';
 
 
+数据库连接池大小的配置 以及原理
+https://blog.csdn.net/w05980598/article/details/78797310/
+
+
+？？？数据库连接池的大小 与  mycat 配置的大小   数据库配置的大小 之间的关联
+
+
+
+
 
 2.数据库索引的原理
 https://tech.meituan.com/mysql-index.html
@@ -125,15 +134,37 @@ http://www.alanzeng.cn/2016/03/mysql-row-size-too-large-8126/
 http://blog.csdn.net/alanzyy/article/details/50782751
 
 
+6.为什么HikariCP被号称为性能最好的Java数据库连接池
+
+与其他数据库连接池的性能测试对比
+https://blog.csdn.net/clementad/article/details/46928621
+
+
+数据库连接池性能比对(hikari druid c3p0 dbcp jdbc)   以及 配置优化
+https://blog.csdn.net/qing_mei_xiu/article/details/76054885
+
+
+分析
+https://www.jianshu.com/p/dd0c2b0ed202
+
+https://www.javafm.com/issue/141
+
+
+
+hikaricp 源码分析
+https://juejin.im/post/5ad44c9b6fb9a028d70112e0
+
+
+
+
+
 
 
 
 guava
 
 
-
 redis
-
 
 
 druid

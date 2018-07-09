@@ -190,6 +190,9 @@ http://blog.csdn.net/pfnie/article/details/53191892
 http://ifeve.com/introduce-abstractqueuedsynchronizer/
 
 
+https://blog.csdn.net/mawming/article/details/52314968
+
+
 UnSafe
 
 https://stackoverflow.com/questions/26534489/unsafe-park-vs-object-wait
@@ -221,9 +224,16 @@ https://www.cnblogs.com/hf-cherish/p/4970267.html
 
 
 线程安全的集合
+
 http://blog.csdn.net/gldemo/article/details/44653787
 
 http://www.cnblogs.com/ijavanese/p/3778688.html
+
+
+Hirakicp中使用的ConcurrentBag
+
+
+
 
 
 
