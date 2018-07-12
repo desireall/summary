@@ -88,6 +88,9 @@ io密集型业务 线程数量 =  CPU核心数/(1-阻塞系数)
     这个阻塞系数一般为0.8~0.9之间，也可以取0.8或者0.9。套用公式，对于双核CPU来说，它比较理想的线程数就是20，当然这都不是绝对的，需要根据实际情况以及实际业务来调整。
     final int poolSize = (int)(cpuCore/(1-0.9))
 
+线程池使用中的问题	
+https://blog.csdn.net/manbuyuzhongAAA/article/details/53573458
+	
 
 
 
@@ -185,6 +188,7 @@ http://blog.csdn.net/jiankunking/article/details/72874345
 ReentrantLock 相关源码解读
 
 AbstractQueuedSynchronizer
+
 http://blog.csdn.net/pfnie/article/details/53191892
 
 http://ifeve.com/introduce-abstractqueuedsynchronizer/
@@ -233,6 +237,12 @@ http://www.cnblogs.com/ijavanese/p/3778688.html
 Hirakicp中使用的ConcurrentBag
 
 
+SynchronousQueue
+
+https://www.cnblogs.com/softidea/p/5174151.html
+
+
+
 
 
 
@@ -249,6 +259,23 @@ jvm 垃圾回收算法
 http://blog.csdn.net/hanruikai/article/details/42643325
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------
+json 转换
+
+https://blog.csdn.net/lk_blog/article/details/7685169
 
 
 
